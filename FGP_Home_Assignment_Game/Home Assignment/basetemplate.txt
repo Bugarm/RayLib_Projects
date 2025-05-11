@@ -1,0 +1,84 @@
+//https://archive.org/details/lines_eng
+#include "raylib.h"
+
+
+//constants
+const int screenWidth = 1024;
+const int screenHeight = 768;
+const int tileSize = 50;
+const int boardSize =9;
+
+// Colors for the spheres
+Color colors[] = {BLANK, RED, GREEN, BLUE};
+
+
+// 0 empty tile (no sphere)
+// 1 red sphere
+// 2 green sphere
+// 3 blue sphere
+int board[9][9] = {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+void DrawBoard(int startX, int startY) {
+    for (int y = 0; y < boardSize; ++y) {
+        for (int x = 0; x < boardSize; ++x) {
+            int posX = startX + x * tileSize;
+            int posY = startY + y * tileSize;
+            DrawRectangleLines(posX, posY, tileSize, tileSize, BLACK);
+
+            int sphereType = board[y][x];
+            if (sphereType != 0) {
+                DrawCircle(posX + tileSize / 2, posY + tileSize / 2, tileSize / 2 - 5, colors[sphereType]);
+            }
+        }
+    }
+}
+
+
+int main() {
+    // Initialization
+    InitWindow(screenWidth, screenHeight, "");
+
+    // Set our game to run at 60 frames-per-second
+    SetTargetFPS(60);
+
+    // Calculate starting position of the board
+    int startX = screenWidth / 2 - (boardSize * tileSize) / 2;
+    int startY = screenHeight / 2 - (boardSize * tileSize) / 2;
+
+    // Main game loop
+    while (!WindowShouldClose()) {
+        // Update
+        Vector2 mousePos = GetMousePosition();
+        int boardX = (mousePos.x - startX) / tileSize;
+        int boardY = (mousePos.y - startY) / tileSize;
+        
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            if (boardX >= 0 && boardX < boardSize && boardY >= 0 && boardY < boardSize) {
+                if (board[boardY][boardX] == 0) {
+                    board[boardY][boardX] = 1;  // Set to red sphere
+                }
+            }
+        }
+        // Draw
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawBoard(startX,startY);
+         
+        EndDrawing();
+    }
+
+    // De-Initialization
+    CloseWindow();
+
+    return 0;
+}

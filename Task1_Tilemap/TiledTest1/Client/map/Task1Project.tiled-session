@@ -1,0 +1,114 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "overworld.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInEditor": 1
+        },
+        "OverworldMap.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "ground.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
+        "island.tmx": {
+            "scale": 0.791171875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 320.410783055199,
+                "y": 240.1500938086304
+            }
+        },
+        "island.tmx#island": {
+            "scaleInDock": 1
+        },
+        "old/island.tmx": {
+            "scale": 0.94109375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 319.8406109912004,
+                "y": 240.14610659139962
+            }
+        },
+        "old/island.tmx#island": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "overworld.tmj": {
+            "scale": 0.94109375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 319.8406109912004,
+                "y": 240.14610659139962
+            }
+        },
+        "overworld.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 219.33333333333334,
+                "y": 222
+            }
+        },
+        "overworld.tmx#ground": {
+            "scaleInDock": 1
+        },
+        "overworld.tmx#stoneGround": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "overworld.tmx#walls": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "stoneGround.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "walls.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "G:/My Drive/School/6.1A Yr1/Semester B/Game Mechanics 1/Assignments/Task1_Tilemap/TiledTest1/Client/map",
+    "last.imagePath": "G:/My Drive/School/6.1A Yr1/Semester B/Game Mechanics 1/Assignments/Task1_Tilemap/TiledTest1/Client/map",
+    "map.height": 30,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 40,
+    "openFiles": [
+        "overworld.tmx"
+    ],
+    "project": "Task1Project.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "overworld.tmx",
+        "old/island.tmx",
+        "ground.tsx",
+        "overworld.tmj",
+        "stoneGround.tsx",
+        "walls.tsx",
+        "OverworldMap.tsx",
+        "island.tmx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    },
+    "tileset.type": 0
+}

@@ -1,0 +1,178 @@
+#include "raylib.h"
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+// Constants
+const int playerWidth = 60.0f;
+const int playerHeight= 20.0f;
+const int playerSpeed = 300.0f;
+const float meteorSpawnRate = 0.4f;
+const float meteorRadius = 20.f;
+
+// Forward declarations
+class Player;
+class Meteor;
+
+// Global variables
+std::vector<Meteor> meteors;
+
+class Player {
+    public:
+        Vector2 position;
+        float width;
+        float height;
+        float speed;
+        Color color;
+        bool isHit;
+        float hitTimer; //timer to track the "hit" state duration
+        const float hitDuration =1.0f; //duration to stay in "hit" state
+        int hitCount;
+
+        Player(Vector2 pos, float w, float h, float s, Color c) : position(pos), width(w), height(h), speed(s), color(c), isHit(false), hitTimer(0), hitCount(0) {}
+
+        void Update();
+        void Draw() const;
+        void DrawHitCount() const;  // New method to draw the hit count
+        bool CheckCollision(const Meteor& meteor);
+        
+};
+
+class Meteor {
+    public:
+        Vector2 position;
+        float speed;
+        bool active;
+
+        Meteor(Vector2 pos, float s) : position(pos), speed(s), active(true) {}
+
+        void Update(float deltaTime);
+        void Draw() const;
+};
+
+void Player::Update() {
+    if(IsKeyDown(KEY_RIGHT) && position.x + width < GetScreenWidth()){
+        position.x += speed * GetFrameTime();
+    }
+
+    if(IsKeyDown(KEY_LEFT) && position.x > 0){
+        position.x -= speed * GetFrameTime();
+    }
+
+    for(auto &meteor : meteors){
+        if(meteor.active && CheckCollision(meteor)){
+            if(!isHit){ // Ensure we only count the hit once per collision
+                isHit = true;
+                color = RED;
+                hitCount++;  // Increase the hit count
+                hitTimer = 0; // Reset the hit timer when a new hit occurs
+            }           
+            break;
+        }
+    }
+
+    if (isHit) {
+        hitTimer += GetFrameTime();  // Increase the timer by the frame time
+        if (hitTimer >= hitDuration) {
+            isHit = false;  // Reset the hit flag
+            color = GREEN;  // Reset the color
+            hitTimer = 0;   // Reset the timer
+        }
+    }
+
+}
+
+void Player::Draw() const {
+    DrawRectangle(position.x, position.y, width, height, color);
+}
+
+bool Player::CheckCollision(const Meteor& meteor) {
+    return CheckCollisionCircleRec(meteor.position, meteorRadius, {position.x, position.y, width, height});
+}
+
+void Player::DrawHitCount() const {
+    DrawText(TextFormat("Hits: %i", hitCount), 10, 10, 20, RED);  // Adjust position and size as needed. %i means format as integer
+}
+
+void Meteor::Update(float deltaTime) {
+    if(active){
+        position.y += speed * deltaTime;
+        if(position.y > GetScreenHeight()){
+            active = false;
+        }
+    }
+}
+
+void Meteor::Draw() const {
+    if(active){
+        DrawCircleV(position, meteorRadius, GRAY);
+    }
+}
+
+void UpdateMeteors(float deltaTime){
+    for(auto &meteor : meteors){
+        meteor.Update(deltaTime);
+    }
+
+    // Remove inactive meteors from the list to free memory
+    //when you remove an element from the middle of a vector, all the elements after it are shifted down, and your iterator (or index) is no longer valid. This is why, in many cases, it's recommended to iterate backward during removal, so you don't skip checking any elements after removal.
+    for (int i = meteors.size() - 1; i >= 0; i--) { // iterate backwards through the meteor list
+        if (!meteors[i].active) {
+            meteors.erase(meteors.begin() + i); // remove the current element
+        }
+    }
+
+    std::cout << "Number of Meteors in memory:" << meteors.size() << std::endl;
+
+}
+
+void SpawnMeteor(){
+    float randPosition = rand() % (int)(GetScreenWidth() - meteorRadius * 2) + meteorRadius;
+    meteors.emplace_back(Vector2{randPosition, 0}, 200.f);
+}
+
+int main()
+{
+    srand(time(NULL));
+
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+
+    InitWindow(screenWidth, screenHeight, "PROJECT: SPACESHIP GAME");
+    SetTargetFPS(60);
+
+    Player spaceship({0, screenHeight - 50}, playerWidth, playerHeight, playerSpeed, GREEN);
+    float spawnTimer = 0.0f;
+
+    while (!WindowShouldClose())
+    {
+        //-----------UPDATE-----------
+        float deltaTime = GetFrameTime();
+
+        spawnTimer += deltaTime;
+        if(spawnTimer >= meteorSpawnRate){
+            SpawnMeteor();
+            spawnTimer = 0.0f;
+        }
+
+        UpdateMeteors(deltaTime);
+        spaceship.Update();
+
+        //-----------DRAW-----------
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        for(auto &meteor : meteors){
+            meteor.Draw();
+        }
+
+        spaceship.Draw();
+        spaceship.DrawHitCount();
+        
+        EndDrawing();
+    }
+
+    CloseWindow();
+    return 0;
+}
